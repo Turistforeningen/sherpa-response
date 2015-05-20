@@ -1,7 +1,13 @@
+redis:
+  image: redis:2.8
+  restart: always
+
 www:
   build: .
   ports:
     - "8080:8080"
+  links:
+    - redis
   volumes:
     - .:/sherparesponse
   environment:
