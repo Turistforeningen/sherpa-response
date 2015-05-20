@@ -8,7 +8,6 @@ import redis
 from udp import Listener
 
 app = Flask(__name__)
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 r = redis.StrictRedis(host='redis', port=6379, db=0)
 
 # Paths are stored in the 'paths' redis hash.
