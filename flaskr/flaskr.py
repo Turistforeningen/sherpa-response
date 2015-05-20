@@ -4,6 +4,7 @@ import pickle
 from flask import Flask, render_template
 
 import redis
+from raven.contrib.flask import Sentry
 
 from udp import Listener
 
@@ -12,6 +13,8 @@ if os.environ.get('CONFIGURATION', 'prod').lower() == 'prod':
     app.config['DEBUG'] = False
 else:
     app.config['DEBUG'] = True
+
+sentry = Sentry(app)
 
 # Paths are stored in the 'paths' redis hash.
 # Keys are the paths with query string, and the value is (response time, count)
