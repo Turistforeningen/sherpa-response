@@ -44,7 +44,7 @@ def sort_paths(paths):
         value, count = pickle.loads(s)
         paths_parsed.append((path.decode('utf-8'), value, count))
 
-    return reversed(sorted(paths_parsed, key=lambda p: p[1]))
+    return reversed(sorted(paths_parsed, key=lambda p: p[1])[-100:])
 
 @app.route('/')
 def index():
