@@ -8,10 +8,14 @@ import redis
 from udp import Listener
 
 app = Flask(__name__)
-r = redis.StrictRedis(host='redis', port=6379, db=0)
+if os.environ.get('CONFIGURATION', 'prod').lower() == 'prod':
+    app.config['DEBUG'] = False
+else:
+    app.config['DEBUG'] = True
 
 # Paths are stored in the 'paths' redis hash.
 # Keys are the paths with query string, and the value is (response time, count)
+r = redis.StrictRedis(host='redis', port=6379, db=0)
 
 def add_measure(path, new_measure):
     result = r.hget('paths', path)
