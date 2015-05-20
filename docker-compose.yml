@@ -1,9 +1,12 @@
 www:
   build: .
   ports:
-    - "8080"
+    - "8080:8080"
+  volumes:
+    - .:/sherparesponse
   environment:
+    - APP_HOST=0.0.0.0
     - APP_PORT=8080
-    - FLASKR_SETTINGS=flaskr/settings.py
-  command: flask --app=flaskr run
+    - FLASKR_SETTINGS=settings.py
+  command: python flaskr/flaskr.py
   restart: always
