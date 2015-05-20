@@ -3,4 +3,23 @@
 
   <h1>Sherpa mean response time</h1>
 
+  <table>
+    <thead>
+      <tr>
+        <th>Path</th>
+        <th>Typisk responstid</th>
+        <th>Målinger</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for path in paths %}
+        <tr>
+          <td>{{ path.0 }}</td>
+          <td>{{ path.1|round(1) }}ms</td>
+          <td>{{ path.2 }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
 {% endblock %}
