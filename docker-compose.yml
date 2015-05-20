@@ -4,4 +4,6 @@ www:
     - "8080"
   environment:
     - APP_PORT=8080
+    - FLASKR_SETTINGS=flaskr/settings.py
+  command: flask --app=flaskr run
   restart: always
