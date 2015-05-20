@@ -42,7 +42,7 @@ def sort_paths(paths):
     paths_parsed = []
     for path, s in paths.items():
         value, count = pickle.loads(s)
-        paths_parsed.append((path, value, count))
+        paths_parsed.append((path.decode('utf-8'), value, count))
 
     return reversed(sorted(paths_parsed, key=lambda p: p[1]))
 
