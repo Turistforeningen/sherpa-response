@@ -1,4 +1,5 @@
 import os
+import pickle
 
 from flask import Flask, render_template
 
@@ -14,15 +15,13 @@ r = redis.StrictRedis(host='redis', port=6379, db=0)
 def add_measure(path, new_measure):
     result = r.hget('paths', path)
     if result is None:
-        r.hset('paths', path, '%s,1' % new_measure)
+        r.hset('paths', path, pickle.dumps((new_measure, 1)))
     else:
-        old_measure, count = result.split(',')
-        old_measure = float(old_measure)
-        count = int(count)
-        r.hset('paths', path, '%s,%s' % (
+        old_measure, count = pickle.loads(result)
+        r.hset('paths', path, pickle.dumps((
             calc_new_value(old_measure, new_measure, count),
             count + 1,
-        ))
+        )))
 
 def calc_new_value(old_measure, new_measure, count):
     """
@@ -34,9 +33,7 @@ def calc_new_value(old_measure, new_measure, count):
 def sort_paths(paths):
     paths_parsed = []
     for path, s in paths.items():
-        value, count = s.split(',')
-        value = float(value)
-        count = int(count)
+        value, count = pickle.loads(s)
         paths_parsed.append((path, value, count))
 
     return reversed(sorted(paths_parsed, key=lambda p: p[1]))
