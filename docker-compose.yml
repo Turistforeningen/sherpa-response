@@ -6,6 +6,7 @@ www:
   build: .
   ports:
     - "8080:8080"
+    - "41337:41337/udp"
   links:
     - redis
   volumes:
@@ -13,6 +14,7 @@ www:
   environment:
     - APP_HOST=0.0.0.0
     - APP_PORT=8080
+    - UDP_PORT=41337
     - FLASKR_SETTINGS=settings.py
   command: python flaskr/flaskr.py
   restart: always

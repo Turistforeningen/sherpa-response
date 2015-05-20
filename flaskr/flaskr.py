@@ -5,6 +5,8 @@ from flask import Flask, render_template
 
 import redis
 
+from udp import Listener
+
 app = Flask(__name__)
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 r = redis.StrictRedis(host='redis', port=6379, db=0)
@@ -44,4 +46,10 @@ def index():
     return render_template('index.html', paths=sort_paths(paths))
 
 if __name__ == '__main__':
+    # Start the UDP listener thread
+    if not app.config['DEBUG']:
+        listener = Listener(callback=add_measure)
+        listener.start()
+
+    # Start the Flask app
     app.run(host=os.environ['APP_HOST'], port=int(os.environ['APP_PORT']))
